@@ -1,0 +1,36 @@
+################# Elasticsearch cluster Input varibales ##################
+es_heap_size: "1g"
+es_instance_name: "master"
+es_config:
+      cluster.name: "hawk-cluster"
+      discovery.zen.ping.unicast.hosts: "ip-172-31-14-133.us-west-2.compute.internal"
+      bootstrap.memory_lock: false
+      network.host : '0.0.0.0'
+es_node_data: false
+es_node_master: true
+es_max_open_files: 65536
+es_max_map_count: 262144
+es_plugins:
+     - plugin: ingest-geoip
+
+#################### kibana input varibales #######################
+
+kibana_elasticsearch_url: "http://ip-172-31-14-133.us-west-2.compute.internal:9200"
+
+
+####################  fluentbit Input Variables php-nginx and if you want to setup for other application then define your application log path("Path": "---") and app name ##################
+
+fluentbit_inputs:
+  - {"Name": "systemd", "Tag": "systemd"}
+  - {"Name": "tail", "tag": "app-php", "Path": "/var/log/nginx/*.log", "Refresh_Interval": "5", "Mem_Buf_Limit": "100MB", "Buffer_Chunk_Size": "128k", "DB": "fluent-bit.db", "Buffer_Max_Size": "4096k" }
+
+fluentbit_filter:
+  - {"Name": "record_modifier", "Match": "app-php", "Record": "hostname app-php"}
+
+
+fluentbit_outputs:
+  - {"Name": "es", "Match": "app-php", "Host": "ip-172-31-18-129.us-west-2.compute.internal","Port":"9200", "Index": "app-php", "Logstash_Format": "true", "Type": "app-php", "Logstash_Prefix": "app-php", "Retry_Limit": "1"}
+
+
+
+

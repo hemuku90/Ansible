@@ -1,0 +1,11 @@
+---
+#
+# Playbook to install Elasticsearch and Kibana 
+#
+- hosts: localhost
+  become: yes
+  become_user: root
+  roles:
+  - { role: elasticsearch }
+  - { role: kibana }
+

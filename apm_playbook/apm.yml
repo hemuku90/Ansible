@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  become: true
+  become_user: root
+  gather_facts: true
+  tasks:
+    - name: Install APM server .deb package
+      apt:
+        deb: https://artifacts.elastic.co/downloads/apm-server/apm-server-6.4.2-amd64.deb
+
+    - name: Extract .deb package
+      command: dpkg -i apm-server-6.4.2-amd64.deb

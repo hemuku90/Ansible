@@ -1,0 +1,32 @@
+---
+# Role to install telegraf on target machine. In order to skip the installation of telegraf on target host, pass --extra-vars telegraf_install=false when running the playbook. Default is true.
+- name: Install Telegraf
+  hosts: host
+  become: yes
+  vars_files:
+    - input.yaml
+  roles:
+    - { role: telegraf, when: telegraf_install == 'true' }
+#  vars:
+#    database: "telegraf"
+
+# Role to install influxdb on target machine. In order to skip the installation of Influxdb on target host, pass --extra-vars influxdb_install=false when running the playbook. Default is true.
+- name: influxdb installation                 
+  hosts: host
+  become: yes
+  vars_files:
+    - input.yaml
+  roles: 
+    - { role: influxdb, when: influxdb_install == 'true'  }
+  
+# Role to install Grafana on target machine. In order to skip the installation of Grafana on target host, pass --extra-vars grafana_install=false when running the playbook. Default is true.
+- name: Install Grafana
+  become: yes
+  hosts: host
+  vars_files:
+    - input.yaml
+  roles: 
+    - { role: grafana, when: grafana_install == 'true'  }
+  
+
+  
